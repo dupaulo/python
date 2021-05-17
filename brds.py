@@ -1,3 +1,12 @@
+__author__ = "Paulo Eduardo Heitor Silva"
+__copyright__ = "Copyright 2021"
+__credits__ = ["Paulo Eduardo Heitor Silva"]
+__license__ = "GPL"
+__version__ = "1.0.1"
+__maintainer__ = "PEHS"
+__email__ = "paulos008@gmail.com"
+__status__ = "Production"
+
 import os
 import sys
 import pandas as pd
