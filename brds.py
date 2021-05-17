@@ -51,7 +51,7 @@ for element in HTML_data[1:]:
             sub_data.append(sub_element.get_text()) 
             td_check = sub_element.find('a')
             link = sub_element.a['href']
-            link =  link.replace('../Empresas-Listadas/ResumoEmpresaPrincipal.aspx?','')
+            link =  link.replace('../Empresas-Listadas/ResumoEmpresaPrincipal.aspx?codigoCvm=','')
             link= link.replace('&bdr=s','')
             sub_data.append(link)
         except:
@@ -69,7 +69,6 @@ dataFrame["CodigoCvm"] = dataFrame["CodigoCvm"].str.strip()
 
 
 dataFrame.to_csv('arquivos/brdsPatrocinados.csv', index = False)
-
 df = pd.read_csv('arquivos/brdsPatrocinados.csv')
 df.loc[df.duplicated(), :]
 df.pop("BDR's Relevantes")
@@ -79,4 +78,24 @@ df.to_csv('arquivos/brdsPatrocinados1.csv', index=False)
 
 #Excluo o arquivo com dados duplicados
 os.remove('arquivos/brdsPatrocinados.csv')
+
+#Aqui faço solicitação para pegar mais informações sobre os BRD's. 
+CodigoCvm =  (dataFrame["BrdName"][1])
+
+#outro esquema
+brds = 'http://bvmf.bmfbovespa.com.br/pt-br/mercados/acoes/empresas/ExecutaAcaoConsultaInfoEmp.asp'
+data = {
+'CodCVM':CodigoCvm,
+'ViewDoc':'0#a'
+}
+
+
+#criando um novo arquivo com dado da requisição enviada
+response = requests.post(brds,params=data)
+with open('arquivos/'+CodigoCvm+'.html', 'w') as f:
+    f.write(response.text)
+
+
+
+
 
