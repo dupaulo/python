@@ -5,7 +5,7 @@ __license__ = "GPL"
 __version__ = "1.0.1"
 __maintainer__ = "PEHS"
 __email__ = "paulos008@gmail.com"
-__status__ = "Production"
+__status__ = "Dev"
 
 import os
 import sys
@@ -51,6 +51,8 @@ for element in HTML_data[1:]:
             sub_data.append(sub_element.get_text()) 
             td_check = sub_element.find('a')
             link = sub_element.a['href']
+            link =  link.replace('../Empresas-Listadas/ResumoEmpresaPrincipal.aspx?','')
+            link= link.replace('&bdr=s','')
             sub_data.append(link)
         except:
             continue
@@ -64,6 +66,8 @@ dataFrame = dataFrame.rename(columns = {'Segmento':'CodigoCvm'})
 dataFrame[1] = dataFrame[1].str.strip()
 dataFrame["CodigoCvm"] = dataFrame["CodigoCvm"].str.strip()
 
+
+
 dataFrame.to_csv('arquivos/brdsPatrocinados.csv', index = False)
 
 df = pd.read_csv('arquivos/brdsPatrocinados.csv')
@@ -75,3 +79,4 @@ df.to_csv('arquivos/brdsPatrocinados1.csv', index=False)
 
 #Excluo o arquivo com dados duplicados
 os.remove('arquivos/brdsPatrocinados.csv')
+
