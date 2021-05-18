@@ -6,7 +6,6 @@ __version__ = "1.0.1"
 __maintainer__ = "PEHS"
 __email__ = "paulos008@gmail.com"
 __status__ = "Dev"
-
 import os
 import sys
 import pandas as pd
@@ -80,22 +79,19 @@ df.to_csv('arquivos/brdsPatrocinados1.csv', index=False)
 os.remove('arquivos/brdsPatrocinados.csv')
 
 #Aqui faço solicitação para pegar mais informações sobre os BRD's. 
-CodigoCvm =  (dataFrame["BrdName"][1])
+codigoCvm =  (dataFrame["BrdName"])
 
-#outro esquema
-brds = 'http://bvmf.bmfbovespa.com.br/pt-br/mercados/acoes/empresas/ExecutaAcaoConsultaInfoEmp.asp'
-data = {
-'CodCVM':CodigoCvm,
-'ViewDoc':'0#a'
-}
-
-
-#criando um novo arquivo com dado da requisição enviada
-response = requests.post(brds,params=data)
-with open('arquivos/'+CodigoCvm+'.html', 'w') as f:
-    f.write(response.text)
-
-
-
-
-
+#Busncando dados direto na B3 sobre cada Brd encontrado anteriormente, aqui crio um arquivo com informação de cada empresa
+for CodigoCvm in codigoCvm:  
+   if (CodigoCvm != None):
+    brds = 'http://bvmf.bmfbovespa.com.br/pt-br/mercados/acoes/empresas/ExecutaAcaoConsultaInfoEmp.asp'
+    data = {
+        'CodCVM':CodigoCvm,
+        'ViewDoc':'0#a'
+    }
+    #criando um novo arquivo com dado da requisição enviada
+    response = requests.post(brds,params=data)
+    with open('arquivos/'+CodigoCvm+'.html', 'w') as f:
+     f.write(response.text)
+else:
+    print ("Não foi encontrado")
